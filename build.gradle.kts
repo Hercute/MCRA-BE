@@ -45,13 +45,25 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+
+	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
 	implementation("org.springframework.boot:spring-boot-starter-validation") //벨리데이션
 	implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta") // 쿼리DSL
 	kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta") // 쿼리DSL
+
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+
+	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+	implementation ("com.fasterxml.jackson.core:jackson-databind")
 }
 
 kotlin {
