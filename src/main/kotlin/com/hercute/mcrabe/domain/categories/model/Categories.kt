@@ -12,4 +12,5 @@ class Categories(
     val main: String,
 
     @Column(name = "sub")
+    val sub : String,
 )
