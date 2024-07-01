@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service
 
 @Service
 class FridgeServiceImpl: FridgeService {
-    override fun createFridge(memberId: String, request: CreateFridgeRequest) {
+    override fun createFridge(memberId: Long, request: CreateFridgeRequest) {
         TODO("Not yet implemented")
     }
 
-    override fun updateFridge(memberId: String, fridgeId: Long, request: UpdateFridgeRequest) {
+    override fun updateFridge(memberId: Long, fridgeId: Long, request: UpdateFridgeRequest) {
         TODO("Not yet implemented")
     }
 
-    override fun deleteFridge(memberId: String, fridgeId: Long) {
+    override fun deleteFridge(memberId: Long, fridgeId: Long) {
         TODO("Not yet implemented")
     }
 

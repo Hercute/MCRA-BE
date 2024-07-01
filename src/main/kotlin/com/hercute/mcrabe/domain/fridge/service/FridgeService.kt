@@ -6,11 +6,11 @@ import com.hercute.mcrabe.domain.fridge.dto.UpdateFridgeRequest
 
 interface FridgeService {
 
-    fun createFridge(memberId: String, request: CreateFridgeRequest)
+    fun createFridge(memberId: Long, request: CreateFridgeRequest)
 
-    fun updateFridge(memberId: String, fridgeId: Long, request: UpdateFridgeRequest)
+    fun updateFridge(memberId: Long, fridgeId: Long, request: UpdateFridgeRequest)
 
-    fun deleteFridge(memberId: String, fridgeId: Long)
+    fun deleteFridge(memberId: Long, fridgeId: Long)
 
     fun getFridge(memberId: Long, fridgeId: Long): FridgeResponse
 

@@ -23,7 +23,7 @@ class FridgeController(
 
     @PostMapping
     fun createFridge(
-        @PathVariable memberId: String,
+        @PathVariable memberId: Long,
         @RequestBody request: CreateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
@@ -33,7 +33,7 @@ class FridgeController(
 
     @PutMapping("/{fridgeId}")
     fun updateFridge(
-        @PathVariable memberId: String,
+        @PathVariable memberId: Long,
         @PathVariable fridgeId: Long,
         @RequestBody request: UpdateFridgeRequest
     ): ResponseEntity<Unit> {
@@ -44,7 +44,7 @@ class FridgeController(
 
     @DeleteMapping("/{fridgeId}")
     fun deleteFridge(
-        @PathVariable memberId: String,
+        @PathVariable memberId: Long,
         @PathVariable fridgeId: Long
     ): ResponseEntity<Unit> {
         return ResponseEntity
