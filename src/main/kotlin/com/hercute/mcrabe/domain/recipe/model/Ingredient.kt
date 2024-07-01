@@ -6,7 +6,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
 @Entity
-class Tag (
+class Ingredient  (
     val name : String,
 ){
     @Id

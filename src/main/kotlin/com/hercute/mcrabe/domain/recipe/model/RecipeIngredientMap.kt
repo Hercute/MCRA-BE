@@ -3,15 +3,15 @@ package com.hercute.mcrabe.domain.recipe.model
 import jakarta.persistence.*
 
 @Entity
-class RecipeTagMap (
+class RecipeIngredientMap  (
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     val recipe : Recipe, // N:1
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
-    val tag : Tag, // N:1
+    @JoinColumn(name = "ingredient_id")
+    val ingredient : Ingredient, // N:1
 
 ){
     @Id
