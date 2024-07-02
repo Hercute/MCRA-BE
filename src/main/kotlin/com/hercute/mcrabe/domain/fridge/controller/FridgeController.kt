@@ -22,53 +22,53 @@ class FridgeController(
 ) {
 
     @PostMapping
-    fun createFridge(
+    fun createItemInFridge(
         @PathVariable memberId: Long,
         @RequestBody request: CreateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(fridgeService.createFridge(memberId, request))
+            .body(fridgeService.createItemInFridge(memberId, request))
     }
 
     @PutMapping("/{fridgeId}")
-    fun updateFridge(
+    fun updateItemOfFridge(
         @PathVariable memberId: Long,
         @PathVariable fridgeId: Long,
         @RequestBody request: UpdateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.updateFridge(memberId, fridgeId, request))
+            .body(fridgeService.updateItemOfFridge(memberId, fridgeId, request))
     }
 
     @DeleteMapping("/{fridgeId}")
-    fun deleteFridge(
+    fun deleteItemOfFridge(
         @PathVariable memberId: Long,
         @PathVariable fridgeId: Long
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(fridgeService.deleteFridge(memberId, fridgeId))
+            .body(fridgeService.deleteItemOfFridge(memberId, fridgeId))
     }
 
     @GetMapping("/{fridgeId}")
-    fun getFridge(
+    fun getItemOfFridge(
         @PathVariable memberId: Long,
         @PathVariable fridgeId: Long
     ): ResponseEntity<FridgeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getFridge(memberId, fridgeId))
+            .body(fridgeService.getItemOfFridge(memberId, fridgeId))
     }
 
     @GetMapping()
-    fun getFridgeList(
+    fun getItemListOfFridge(
         @PathVariable memberId: Long,
     ): ResponseEntity<List<FridgeResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getFridgeList(memberId))
+            .body(fridgeService.getItemListOfFridge(memberId))
     }
 
 

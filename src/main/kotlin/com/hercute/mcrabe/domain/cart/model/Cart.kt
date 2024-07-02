@@ -16,9 +16,9 @@ class Cart (
 //    @JoinColumn(name = "member_id")
 //    val member: Member,
 
-    val name: String,
+    var name: String,
 
-    val memo: String,
+    var memo: String,
 
     val purchase: Boolean = false,
 

@@ -16,13 +16,13 @@ class Fridge(
 //    @JoinColumn(name = "member_id")
 //    val member: Member,
 
-    val name: String,
+    var name: String,
 
-    val expirationDate: Timestamp,
+    var expirationDate: Timestamp? = null,
 
-    val memo: String,
+    var memo: String,
 
-    val storage: Storage
+    var storage: Storage = Storage.COLD
 
 ): BaseEntity() {
     @Id
