@@ -1,6 +1,6 @@
 package com.hercute.mcrabe.domain.recipe.dto
-data class RecipeResponse(
-    val id:Long,
+
+data class UpdateRecipeRequest (
 
     val title:String,
     val name:String,
@@ -10,6 +10,5 @@ data class RecipeResponse(
     val likeCounts:Int,
     val image:String,
 
-    val recipeTagMaps: List<RecipeTagMapResponse>,
-    val recipeIngredientMaps: List<RecipeIngredientMapResponse>
+    val memberId:Long, // N:1
 )

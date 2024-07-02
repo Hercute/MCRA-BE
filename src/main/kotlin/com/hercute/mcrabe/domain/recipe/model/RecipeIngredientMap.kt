@@ -5,6 +5,8 @@ import jakarta.persistence.*
 @Entity
 class RecipeIngredientMap  (
 
+    val quantity : String,
+
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     val recipe : Recipe, // N:1

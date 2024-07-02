@@ -1,6 +1,6 @@
 package com.hercute.mcrabe.domain.recipe.dto
 
-data class RecipeRequest(
+data class CreateRecipeRequest(
     val title:String,
     val name:String,
     val comment:String,
@@ -8,6 +8,4 @@ data class RecipeRequest(
     val time:Int,
     val likeCounts:Int,
     val image:String,
-
-    val memberId:Long, // N:1
 )
