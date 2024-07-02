@@ -1,12 +1,12 @@
-package com.hercute.mcrabe.domain.fridge.model
+package com.hercute.mcrabe.domain.cart.model
 
 import com.hercute.mcrabe.global.common.BaseEntity
 import jakarta.persistence.*
 import java.sql.Timestamp
 
 @Entity
-@Table(name = "fridges")
-class Fridge(
+@Table(name = "carts")
+class Cart (
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "category_id")
@@ -18,11 +18,11 @@ class Fridge(
 
     var name: String,
 
-    var expirationDate: Timestamp? = null,
-
     var memo: String,
 
-    var storage: Storage = Storage.COLD
+    val purchase: Boolean = false,
+
+    val purchaseDate: Timestamp? = null
 
 ): BaseEntity() {
     @Id
