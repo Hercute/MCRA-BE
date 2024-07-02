@@ -58,7 +58,7 @@ class CategoriesController(
             .body(categoriesService.getCategoryList())
     }
 
-    @GetMapping
+    @GetMapping("/{categoryId}")
     fun getCategory(
         @PathVariable categoryId: Long
     ) : ResponseEntity<CategoriesResponse>{
