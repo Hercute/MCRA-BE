@@ -1,6 +1,7 @@
 package com.hercute.mcrabe.domain.categories.dto
 
 import com.hercute.mcrabe.domain.categories.model.Categories
+import jakarta.validation.constraints.NotBlank
 
 data class CategoriesResponse(
     val main : String,
