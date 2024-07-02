@@ -18,7 +18,7 @@ class RecipeController(
 ) {
     //@Operation(summary = "레시피 생성")
     @Transactional
-    @PostMapping("/create")
+    @PostMapping
     fun createRecipe(
         @RequestParam memberId : Long,
         @Valid @RequestBody request: CreateRecipeRequest,
@@ -30,20 +30,19 @@ class RecipeController(
 
     //@Operation(summary = "레시피 단건 조회")
     @Transactional
-    @GetMapping("/{RecipeId}")
+    @GetMapping("/{recipeId}")
     fun getRecipe(
-        @RequestParam memberId : Long,
+        @PathVariable recipeId:Long,
     ): ResponseEntity<RecipeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(recipeService.getRecipe(memberId))
+            .body(recipeService.getRecipe(recipeId))
     }
 
     //@Operation(summary = "레시피 통합 조회")
     @Transactional
-    @GetMapping("/allRecipeList")
+    @GetMapping("/recipeList")
     fun getRecipeList(
-        @Valid @RequestBody request: CreateRecipeRequest
         // 조회 조건 추가 필요
     ): ResponseEntity<Page<RecipeResponse>> {
         return ResponseEntity
@@ -53,7 +52,7 @@ class RecipeController(
 
     @Transactional
     @PutMapping("/{recipeId}")
-    fun UpdateRecipeList(
+    fun updateRecipe(
         @PathVariable recipeId : Long,
         @Valid @RequestBody request: UpdateRecipeRequest
     ): ResponseEntity<Unit> {
@@ -64,14 +63,11 @@ class RecipeController(
 
     @Transactional
     @DeleteMapping("/{recipeId}")
-    fun DeleteRecipeList(
+    fun deleteRecipeList(
         @PathVariable recipeId : Long,
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
             .body(recipeService.deleteRecipe(recipeId))
     }
-
-
-
 }

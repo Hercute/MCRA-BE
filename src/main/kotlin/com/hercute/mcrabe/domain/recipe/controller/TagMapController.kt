@@ -1,9 +1,8 @@
 package com.hercute.mcrabe.domain.recipe.controller
 
-import com.hercute.mcrabe.domain.recipe.dto.recipe.CreateRecipeRequest
-import com.hercute.mcrabe.domain.recipe.dto.recipe.RecipeResponse
-import com.hercute.mcrabe.domain.recipe.dto.recipe.UpdateRecipeRequest
-import com.hercute.mcrabe.domain.recipe.service.IngredientMapService
+import com.hercute.mcrabe.domain.recipe.dto.tagMap.CreateTagMapRequest
+import com.hercute.mcrabe.domain.recipe.dto.tagMap.TagMapResponse
+import com.hercute.mcrabe.domain.recipe.dto.tagMap.UpdateTagMapRequest
 import com.hercute.mcrabe.domain.recipe.service.TagMapService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
@@ -13,62 +12,62 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/tagMaps")
 class TagMapController (
     private val tagMapService: TagMapService
 ) {
     //@Operation(summary = "레시피 생성")
     @Transactional
-    @PostMapping("/create")
-    fun createRecipe(
-        @RequestParam memberId : Long,
-        @Valid @RequestBody request: CreateRecipeRequest,
+    @PostMapping
+    fun createTagMap(
+        @RequestParam recipeId : Long,
+        @Valid @RequestBody request: CreateTagMapRequest,
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(tagMapService.createRecipe(memberId, request))
+            .body(tagMapService.createTagMap(recipeId, request))
     }
 
     //@Operation(summary = "레시피 단건 조회")
     @Transactional
-    @GetMapping("/{RecipeId}")
-    fun getRecipe(
-        @RequestParam memberId : Long,
-    ): ResponseEntity<RecipeResponse> {
+    @GetMapping("/{tagMapId}")
+    fun getTagMap(
+        @PathVariable tagMapId : Long,
+    ): ResponseEntity<TagMapResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(tagMapService.getRecipe(memberId))
+            .body(tagMapService.getTagMap(tagMapId))
     }
 
     //@Operation(summary = "레시피 통합 조회")
     @Transactional
-    @GetMapping("/allRecipeList")
-    fun getRecipeList(
-        @Valid @RequestBody request: CreateRecipeRequest
+    @GetMapping("/tagMapList")
+    fun getTagMapList(
         // 조회 조건 추가 필요
-    ): ResponseEntity<Page<RecipeResponse>> {
+    ): ResponseEntity<Page<TagMapResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(tagMapService.getRecipeList())
+            .body(tagMapService.getTagMapList())
     }
 
     @Transactional
-    @PutMapping("/{recipeId}")
-    fun UpdateRecipeList(
-        @PathVariable recipeId : Long,
-        @Valid @RequestBody request: UpdateRecipeRequest
+    @PutMapping("/{tagMapId}")
+    fun updateTagMap(
+        @PathVariable tagMapId : Long,
+        @Valid @RequestBody request: UpdateTagMapRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(tagMapService.updateRecipe(recipeId, request))
+            .body(tagMapService.updateTagMap(tagMapId, request))
     }
 
     @Transactional
-    @DeleteMapping("/{recipeId}")
-    fun DeleteRecipeList(
-        @PathVariable recipeId : Long,
+    @DeleteMapping("/{tagMapId}")
+    fun deleteTagMap(
+        @PathVariable tagMapId : Long,
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(tagMapService.deleteRecipe(recipeId))
+            .body(tagMapService.deleteTagMap(tagMapId))
     }
 }
