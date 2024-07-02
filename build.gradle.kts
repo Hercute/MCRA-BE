@@ -53,6 +53,11 @@ dependencies {
 	implementation("com.querydsl:querydsl-jpa:$queryDslVersion:jakarta") // 쿼리DSL
 	kapt("com.querydsl:querydsl-apt:$queryDslVersion:jakarta") // 쿼리DSL
 
+	implementation("org.springframework.boot:spring-boot-starter-security")//시큐리티
+	implementation("io.jsonwebtoken:jjwt-api:0.12.3")//시큐리티
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")//시큐리티
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")//시큐리티
+
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

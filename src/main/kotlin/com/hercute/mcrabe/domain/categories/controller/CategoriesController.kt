@@ -51,7 +51,7 @@ class CategoriesController(
     }
 
     @GetMapping
-    fun getcategoryList(
+    fun getCategoryList(
     ) : ResponseEntity<List<CategoriesResponse>>{
         return ResponseEntity
             .status(HttpStatus.OK)
