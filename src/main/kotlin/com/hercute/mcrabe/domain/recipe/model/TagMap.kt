@@ -3,7 +3,7 @@ package com.hercute.mcrabe.domain.recipe.model
 import jakarta.persistence.*
 
 @Entity
-class RecipeTagMap (
+class TagMap (
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")

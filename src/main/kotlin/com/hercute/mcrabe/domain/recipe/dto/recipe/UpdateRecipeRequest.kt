@@ -1,4 +1,4 @@
-package com.hercute.mcrabe.domain.recipe.dto
+package com.hercute.mcrabe.domain.recipe.dto.recipe
 
 data class UpdateRecipeRequest (
 
@@ -10,5 +10,4 @@ data class UpdateRecipeRequest (
     val likeCounts:Int,
     val image:String,
 
-    val memberId:Long, // N:1
 )

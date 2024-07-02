@@ -3,7 +3,7 @@ package com.hercute.mcrabe.domain.recipe.model
 import jakarta.persistence.*
 
 @Entity
-class RecipeIngredientMap  (
+class IngredientMap  (
 
     val quantity : String,
 
@@ -14,7 +14,6 @@ class RecipeIngredientMap  (
     @ManyToOne
     @JoinColumn(name = "ingredient_id")
     val ingredient : Ingredient, // N:1
-
 ){
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

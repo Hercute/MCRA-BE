@@ -22,8 +22,8 @@ class Recipe(
     val id : Long? = null
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val recipeTagMaps: MutableList<RecipeTagMap> = mutableListOf()
+    val recipeTagMaps: MutableList<TagMap> = mutableListOf()
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val recipeIngredientMaps: MutableList<RecipeIngredientMap> = mutableListOf()
+    val ingredientMaps: MutableList<IngredientMap> = mutableListOf()
 }

@@ -3,7 +3,8 @@ package com.hercute.mcrabe.domain.recipe.controller
 import com.hercute.mcrabe.domain.recipe.dto.recipe.CreateRecipeRequest
 import com.hercute.mcrabe.domain.recipe.dto.recipe.RecipeResponse
 import com.hercute.mcrabe.domain.recipe.dto.recipe.UpdateRecipeRequest
-import com.hercute.mcrabe.domain.recipe.service.RecipeService
+import com.hercute.mcrabe.domain.recipe.service.IngredientMapService
+import com.hercute.mcrabe.domain.recipe.service.TagMapService
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
@@ -12,9 +13,8 @@ import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/recipes")
-class RecipeController(
-    private val recipeService : RecipeService
+class TagMapController (
+    private val tagMapService: TagMapService
 ) {
     //@Operation(summary = "레시피 생성")
     @Transactional
@@ -25,7 +25,7 @@ class RecipeController(
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(recipeService.createRecipe(memberId, request))
+            .body(tagMapService.createRecipe(memberId, request))
     }
 
     //@Operation(summary = "레시피 단건 조회")
@@ -36,7 +36,7 @@ class RecipeController(
     ): ResponseEntity<RecipeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(recipeService.getRecipe(memberId))
+            .body(tagMapService.getRecipe(memberId))
     }
 
     //@Operation(summary = "레시피 통합 조회")
@@ -48,7 +48,7 @@ class RecipeController(
     ): ResponseEntity<Page<RecipeResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(recipeService.getRecipeList())
+            .body(tagMapService.getRecipeList())
     }
 
     @Transactional
@@ -59,7 +59,7 @@ class RecipeController(
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(recipeService.updateRecipe(recipeId, request))
+            .body(tagMapService.updateRecipe(recipeId, request))
     }
 
     @Transactional
@@ -69,9 +69,6 @@ class RecipeController(
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(recipeService.deleteRecipe(recipeId))
+            .body(tagMapService.deleteRecipe(recipeId))
     }
-
-
-
 }

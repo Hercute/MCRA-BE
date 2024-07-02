@@ -1,4 +1,4 @@
-package com.hercute.mcrabe.domain.recipe.dto
+package com.hercute.mcrabe.domain.recipe.dto.recipe
 
 data class CreateRecipeRequest(
     val title:String,

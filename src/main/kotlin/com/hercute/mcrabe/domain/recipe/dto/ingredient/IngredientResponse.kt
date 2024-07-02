@@ -1,4 +1,4 @@
-package com.hercute.mcrabe.domain.recipe.dto
+package com.hercute.mcrabe.domain.recipe.dto.ingredient
 
 data class IngredientResponse(
     val id:Long,
