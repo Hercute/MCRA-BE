@@ -86,20 +86,20 @@ class CartController(
 
     @PutMapping("/purchase")
     fun checkItemPurchaseStatus(
-        @RequestBody itemList: ItemPurchaseOrMoveRequest
+        @RequestBody request: ItemPurchaseOrMoveRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.checkItemPurchaseStatus(itemList))
+            .body(cartService.checkItemPurchaseStatus(request))
     }
 
     @PutMapping("/move")
     fun moveItemToFridge(
     //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        itemList: ItemPurchaseOrMoveRequest
+        request: ItemPurchaseOrMoveRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.moveItemToFridge(itemList))
+            .body(cartService.moveItemToFridge(request))
     }
 }

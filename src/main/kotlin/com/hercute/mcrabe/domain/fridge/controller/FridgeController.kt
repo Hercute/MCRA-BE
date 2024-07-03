@@ -16,59 +16,59 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/{memberId}/fridges")
+@RequestMapping("/fridges")
 class FridgeController(
     private val fridgeService: FridgeService
 ) {
 
     @PostMapping
     fun createItemInFridge(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody request: CreateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(fridgeService.createItemInFridge(memberId, request))
+            .body(fridgeService.createItemInFridge(request))
     }
 
     @PutMapping("/{fridgeId}")
     fun updateItemOfFridge(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable fridgeId: Long,
         @RequestBody request: UpdateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.updateItemOfFridge(memberId, fridgeId, request))
+            .body(fridgeService.updateItemOfFridge(fridgeId, request))
     }
 
     @DeleteMapping("/{fridgeId}")
     fun deleteItemOfFridge(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable fridgeId: Long
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(fridgeService.deleteItemOfFridge(memberId, fridgeId))
+            .body(fridgeService.deleteItemOfFridge(fridgeId))
     }
 
     @GetMapping("/{fridgeId}")
     fun getItemOfFridge(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable fridgeId: Long
     ): ResponseEntity<FridgeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getItemOfFridge(memberId, fridgeId))
+            .body(fridgeService.getItemOfFridge(fridgeId))
     }
 
     @GetMapping()
     fun getItemListOfFridge(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ResponseEntity<List<FridgeResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getItemListOfFridge(memberId))
+            .body(fridgeService.getItemListOfFridge())
     }
 
 

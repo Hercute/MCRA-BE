@@ -39,11 +39,11 @@ interface CartService {
     ): List<ItemResponse>
 
     fun checkItemPurchaseStatus(
-        itemList: ItemPurchaseOrMoveRequest
+        request: ItemPurchaseOrMoveRequest
     )
 
     fun moveItemToFridge(
 //        userPrincipal: UserPrincipal,
-        itemList: ItemPurchaseOrMoveRequest
+        request: ItemPurchaseOrMoveRequest
     )
 }

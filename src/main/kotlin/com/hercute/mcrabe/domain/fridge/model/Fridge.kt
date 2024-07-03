@@ -1,6 +1,7 @@
 package com.hercute.mcrabe.domain.fridge.model
 
 import com.hercute.mcrabe.domain.categories.model.Categories
+import com.hercute.mcrabe.domain.members.entity.Member
 import com.hercute.mcrabe.global.common.BaseEntity
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
@@ -17,9 +18,9 @@ class Fridge(
     @JoinColumn(name = "category_id")
     var category: Categories,
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    val member: Member,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    val member: Member,
 
     var name: String,
 

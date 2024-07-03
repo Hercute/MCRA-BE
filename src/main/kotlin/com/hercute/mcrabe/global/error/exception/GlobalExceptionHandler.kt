@@ -38,4 +38,32 @@ class GlobalExceptionHandler {
             .status(HttpStatus.NOT_FOUND)
             .body(ErrorResponse(e.message))
     }
+
+    @ExceptionHandler(IncorrectEmailPasswordException::class)
+    fun handleIncorrectEmailPasswordException(e: IncorrectEmailPasswordException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .body(ErrorResponse(e.message))
+    }
+
+    @ExceptionHandler(DateAlreadyPastException::class)
+    fun handleDateAlreadyPastException(e: DateAlreadyPastException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(ErrorResponse(e.message))
+    }
+
+    @ExceptionHandler(AlreadyProcessedException::class)
+    fun handleAlreadyProcessedException(e: AlreadyProcessedException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(ErrorResponse(e.message))
+    }
+
+    @ExceptionHandler(CategoriesAlreadyExistException::class)
+    fun handleCategoriesAlreadyExistException(e: CategoriesAlreadyExistException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(ErrorResponse(e.message))
+    }
 }
