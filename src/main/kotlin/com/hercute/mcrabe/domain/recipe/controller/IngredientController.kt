@@ -4,6 +4,7 @@ import com.hercute.mcrabe.domain.recipe.dto.ingredient.CreateIngredientRequest
 import com.hercute.mcrabe.domain.recipe.dto.ingredient.IngredientResponse
 import com.hercute.mcrabe.domain.recipe.dto.ingredient.UpdateIngredientRequest
 import com.hercute.mcrabe.domain.recipe.service.IngredientService
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
@@ -17,7 +18,7 @@ class IngredientController(
 
     private val ingredientService: IngredientService
 ) {
-    //@Operation(summary = "레시피 생성")
+    @Operation(summary = "레시피 재료 생성")
     @Transactional
     @PostMapping
     fun createIngredient(
@@ -28,7 +29,7 @@ class IngredientController(
             .body(ingredientService.createIngredient(request))
     }
 
-    //@Operation(summary = "레시피 단건 조회")
+    @Operation(summary = "레시피 재료 단건 조회")
     @Transactional
     @GetMapping("/{ingredientId}")
     fun getIngredient(
@@ -39,7 +40,7 @@ class IngredientController(
             .body(ingredientService.getIngredient(ingredientId))
     }
 
-    //@Operation(summary = "레시피 통합 조회")
+    @Operation(summary = "레시피 재료 통합 조회")
     @Transactional
     @GetMapping("/ingredientList")
     fun getIngredientList(

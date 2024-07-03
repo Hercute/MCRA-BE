@@ -63,7 +63,7 @@ class RecipeController(
 
     @Transactional
     @DeleteMapping("/{recipeId}")
-    fun deleteRecipeList(
+    fun deleteRecipe(
         @PathVariable recipeId : Long,
     ): ResponseEntity<Unit> {
         return ResponseEntity

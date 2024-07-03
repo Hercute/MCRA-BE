@@ -4,6 +4,7 @@ import com.hercute.mcrabe.domain.recipe.dto.ingredientMap.CreateIngredientMapReq
 import com.hercute.mcrabe.domain.recipe.dto.ingredientMap.IngredientMapResponse
 import com.hercute.mcrabe.domain.recipe.dto.ingredientMap.UpdateIngredientMapRequest
 import com.hercute.mcrabe.domain.recipe.service.IngredientMapService
+import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.data.domain.Page
 import org.springframework.http.HttpStatus
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 class IngredientMapController(
     private val ingredientMapService : IngredientMapService
 ) {
-    //@Operation(summary = "레시피 생성")
+    @Operation(summary = "레시피 재료 맵 생성")
     @Transactional
     @PostMapping
     fun createIngredientMap(
