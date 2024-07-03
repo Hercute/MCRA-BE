@@ -16,5 +16,5 @@ interface CategoriesService {
 
     fun getCategory(categoryId: Long) : CategoriesResponse
 
-    fun getPaginatedCategoryList(pageable : Pageable, status : String?) : Page<CategoriesResponse>?
+//    fun getPaginatedCategoryList(pageable : Pageable, status : String?) : Page<CategoriesResponse>?
 }

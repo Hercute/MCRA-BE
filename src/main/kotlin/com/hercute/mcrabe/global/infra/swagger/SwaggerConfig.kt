@@ -14,8 +14,7 @@ class SwaggerConfig {
     @Bean
     fun openAPI(): OpenAPI {
         return OpenAPI()
-            .components(
-                Components())
+            .components(Components())
             .info(
                 Info()
                     .title("최종 프로젝트 - 티켓 레이더 API")
@@ -24,3 +23,17 @@ class SwaggerConfig {
             )
     }
 }
+//
+//@Configuration
+//class SwaggerConfig {
+//
+//    @Bean
+//    fun openAPI(): OpenAPI = OpenAPI()
+//        .components(Components())
+//        .info(
+//            Info()
+//                .title("Course API")
+//                .description("Course API schema")
+//                .version("1.0.0")
+//        )
+//}

@@ -4,7 +4,7 @@ import com.hercute.mcrabe.domain.categories.model.Categories
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
-interface CustonCategoriesRepository {
+interface CustomCategoriesRepository {
 
-    fun findByPageable(pageable: Pageable) : Page<Categories>
+//    fun findByPageable(pageable: Pageable) : Page<Categories>
 }
