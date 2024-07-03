@@ -1,7 +1,7 @@
 package com.hercute.mcrabe.domain.recipe.repository
 
-import com.hercute.mcrabe.domain.recipe.model.Recipe
+import com.hercute.mcrabe.domain.recipe.model.TagMap
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface RecipeRepository : JpaRepository<Recipe, Long>  {
+interface TagMapRepository: JpaRepository<TagMap, Long> {
 }
