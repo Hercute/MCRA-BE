@@ -5,6 +5,5 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface CustonCategoriesRepository {
-
-    fun findByPageable(pageable: Pageable) : Page<Categories>
+//    fun findByPageable(pageable: Pageable) : Page<Categories>
 }

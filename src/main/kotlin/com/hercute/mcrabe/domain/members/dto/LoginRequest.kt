@@ -1,4 +1,6 @@
 package com.hercute.mcrabe.domain.members.dto
 
-class LoginRequest {
-}
+data class LoginRequest(
+    val email : String,
+    val password : String
+)
