@@ -1,6 +1,7 @@
 package com.hercute.mcrabe.domain.cart.controller
 
 import com.hercute.mcrabe.domain.cart.dto.AddItemInCartRequest
+import com.hercute.mcrabe.domain.cart.dto.ItemPurchaseOrMoveRequest
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
 import com.hercute.mcrabe.domain.cart.service.CartService
@@ -18,87 +19,87 @@ import org.springframework.web.bind.annotation.RestController
 import java.sql.Timestamp
 
 @RestController
-@RequestMapping("/{memberId}/carts")
+@RequestMapping("/carts")
 class CartController(
     private val cartService: CartService
 ) {
 
     @PostMapping
     fun addItemInCart(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody request: AddItemInCartRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(cartService.addItemInCart(memberId, request))
+            .body(cartService.addItemInCart(request))
     }
 
     @PutMapping("/{itemId}")
     fun updateItemOfCart(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable itemId: Long,
         @RequestBody request: UpdateItemInCartRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.updateItemOfCart(memberId, itemId, request))
+            .body(cartService.updateItemOfCart(itemId, request))
     }
 
     @DeleteMapping("/{itemId}")
     fun deleteItemOfCart(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable itemId: Long,
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(cartService.deleteItemOfCart(memberId, itemId))
+            .body(cartService.deleteItemOfCart(itemId))
     }
 
     @GetMapping("/{itemId}")
     fun getItemOfCart(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable itemId: Long
     ): ResponseEntity<ItemResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getItemOfCart(memberId, itemId))
+            .body(cartService.getItemOfCart(itemId))
     }
 
     @GetMapping
     fun getItemList(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestParam purchasedDate: Timestamp?
     ): ResponseEntity<List<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getItemList(memberId, purchasedDate))
+            .body(cartService.getItemList(purchasedDate))
     }
 
     @GetMapping("/records")
     fun getCartRecords(
-        @PathVariable memberId: Long,
+//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ResponseEntity<List<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getCartRecords(memberId))
+            .body(cartService.getCartRecords())
     }
 
-    @PutMapping("/{itemId}/purchase")
+    @PutMapping("/purchase")
     fun checkItemPurchaseStatus(
-        @PathVariable memberId: Long,
-        @PathVariable itemId: Long
+        @RequestBody itemList: ItemPurchaseOrMoveRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.checkItemPurchaseStatus(memberId, itemId))
+            .body(cartService.checkItemPurchaseStatus(itemList))
     }
 
     @PutMapping("/move")
     fun moveItemToFridge(
-        @PathVariable memberId: Long
+    //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        itemList: ItemPurchaseOrMoveRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.moveItemToFridge(memberId))
+            .body(cartService.moveItemToFridge(itemList))
     }
 }

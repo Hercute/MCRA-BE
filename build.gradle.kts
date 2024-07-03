@@ -65,7 +65,7 @@ dependencies {
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation ("com.fasterxml.jackson.core:jackson-databind")
 
-	implementation("io.springfox:springfox-boot-starter:3.0.0") //스웨거
+//	implementation("io.springfox:springfox-boot-starter:3.0.0") //스웨거
 
 //	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0") //스프링독스
 

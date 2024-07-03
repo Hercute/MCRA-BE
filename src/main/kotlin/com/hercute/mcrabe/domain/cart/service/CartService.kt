@@ -1,6 +1,7 @@
 package com.hercute.mcrabe.domain.cart.service
 
 import com.hercute.mcrabe.domain.cart.dto.AddItemInCartRequest
+import com.hercute.mcrabe.domain.cart.dto.ItemPurchaseOrMoveRequest
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
 import java.sql.Timestamp
@@ -8,39 +9,41 @@ import java.sql.Timestamp
 interface CartService {
 
     fun addItemInCart(
-        memberId: Long,
+//        userPrincipal: UserPrincipal,
         request: AddItemInCartRequest
     )
 
     fun updateItemOfCart(
-        memberId: Long,
+//        userPrincipal: UserPrincipal,
         itemId: Long,
         request: UpdateItemInCartRequest
     )
 
     fun deleteItemOfCart(
-        memberId: Long,
+//        userPrincipal: UserPrincipal,
         itemId: Long,
     )
 
     fun getItemOfCart(
-        memberId: Long,
+//        userPrincipal: UserPrincipal,
         itemId: Long
     ): ItemResponse
 
     fun getItemList(
-        memberId: Long,
+//        userPrincipal: UserPrincipal,
         purchasedDate: Timestamp?
     ): List<ItemResponse>
 
     fun getCartRecords(
-        memberId: Long
+//        userPrincipal: UserPrincipal,
     ): List<ItemResponse>
 
     fun checkItemPurchaseStatus(
-        memberId: Long,
-        itemId: Long
+        itemList: ItemPurchaseOrMoveRequest
     )
 
-    fun moveItemToFridge(memberId: Long)
+    fun moveItemToFridge(
+//        userPrincipal: UserPrincipal,
+        itemList: ItemPurchaseOrMoveRequest
+    )
 }
