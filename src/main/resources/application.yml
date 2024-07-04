@@ -4,3 +4,13 @@ spring:
       matching-strategy: ant_path_matcher
   application:
     name: MCRA-BE
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      highlight_sql: true
+      use_sql_comments: true
+      default_batch_fetch_size: 500
+      hibernate:
+        format_sql: true
+    open-in-view: false

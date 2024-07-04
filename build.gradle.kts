@@ -73,9 +73,11 @@ dependencies {
 	implementation ("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation ("com.fasterxml.jackson.core:jackson-databind")
 
-//	implementation("io.springfox:springfox-boot-starter:3.0.0") //스웨거
+	implementation("io.springfox:springfox-boot-starter:3.0.0") //스웨거
 
-//	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0") //스프링독스
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0") //스프링독스
+
+	implementation("org.postgresql:postgresql") //DB 설치
 
 	runtimeOnly("org.postgresql:postgresql") //포스트그레스SQL
 	runtimeOnly("com.h2database:h2") //h2

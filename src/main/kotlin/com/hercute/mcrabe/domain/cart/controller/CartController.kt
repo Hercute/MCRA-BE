@@ -1,10 +1,13 @@
 package com.hercute.mcrabe.domain.cart.controller
 
 import com.hercute.mcrabe.domain.cart.dto.AddItemInCartRequest
-import com.hercute.mcrabe.domain.cart.dto.ItemPurchaseOrMoveRequest
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
 import com.hercute.mcrabe.domain.cart.service.CartService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -67,26 +70,28 @@ class CartController(
 
     @GetMapping
     fun getItemList(
+        @PageableDefault(size = 5, sort = ["id"]) pageable: Pageable,
 //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        @RequestParam purchasedDate: Timestamp?
-    ): ResponseEntity<List<ItemResponse>> {
+        @RequestParam(required = false) purchasedDate: Timestamp?
+    ): ResponseEntity<Page<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getItemList(purchasedDate))
+            .body(cartService.getItemList(pageable, purchasedDate))
     }
 
     @GetMapping("/records")
     fun getCartRecords(
+        @PageableDefault(size = 5, sort = ["id"]) pageable: Pageable,
 //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): ResponseEntity<List<ItemResponse>> {
+    ): ResponseEntity<Page<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getCartRecords())
+            .body(cartService.getCartRecords(pageable))
     }
 
     @PutMapping("/purchase")
     fun checkItemPurchaseStatus(
-        @RequestBody request: ItemPurchaseOrMoveRequest
+        @RequestBody request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
@@ -96,7 +101,7 @@ class CartController(
     @PutMapping("/move")
     fun moveItemToFridge(
     //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        request: ItemPurchaseOrMoveRequest
+        request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)

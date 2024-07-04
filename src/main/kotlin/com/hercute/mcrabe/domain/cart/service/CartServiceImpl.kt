@@ -1,7 +1,7 @@
 package com.hercute.mcrabe.domain.cart.service
 
 import com.hercute.mcrabe.domain.cart.dto.AddItemInCartRequest
-import com.hercute.mcrabe.domain.cart.dto.ItemPurchaseOrMoveRequest
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
 import com.hercute.mcrabe.domain.cart.model.Cart
@@ -11,6 +11,8 @@ import com.hercute.mcrabe.domain.fridge.model.Fridge
 import com.hercute.mcrabe.domain.fridge.repository.FridgeRepository
 import com.hercute.mcrabe.domain.members.repository.MemberRepository
 import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
@@ -55,25 +57,31 @@ class CartServiceImpl(
     override fun getItemOfCart(itemId: Long): ItemResponse {
         val item = cartRepository.findByIdOrNull(itemId)
             ?: throw ModelNotFoundException("item", itemId)
-        return ItemResponse.from(item)
+        val category = categoryRepository.findByIdOrNull(item.category.id)
+            ?: throw ModelNotFoundException("category", item.category.id)
+        return ItemResponse.from(item,category)
     }
 
-    override fun getItemList(purchasedDate: Timestamp?): List<ItemResponse> {
-        if (purchasedDate != null) {
-
-        } else {
-//            cartRepository.findByIdOrNull()
+    override fun getItemList(pageable: Pageable, purchasedDate: Timestamp?): Page<ItemResponse> {
+        val itemList = cartRepository.findItemByPurchaseStatus(pageable, purchasedDate)
+        return itemList.map {
+            val category = categoryRepository.findByIdOrNull(it.category.id)
+                ?: throw ModelNotFoundException("category", it.category.id)
+            ItemResponse.from(it, category)
         }
-        TODO()
     }
 
-    override fun getCartRecords(): List<ItemResponse> {
+    override fun getCartRecords(pageable: Pageable,): Page<ItemResponse> {
+        //살짝 애매한 부분
+        //과거의 카트 기록을 보는건데 와이어프레임 상에선 달력에 표시되는 형식인것 같음
+        //날짜 하나하나 마다 목록이 떠야하는것인가?
+        //아니면 그냥 모든 기록들을 날짜상관없이 가져오는것인가??
         TODO("Not yet implemented")
     }
 
-    override fun checkItemPurchaseStatus(request: ItemPurchaseOrMoveRequest) {
+    override fun checkItemPurchaseStatus(request: ItemListToSomething) {
         //리스트를 찾은다음 구매여부를 true로 바꿈
-        val itemToPurchase = request.listOfItemsToPurchase.map {
+        val itemToPurchase = request.listOfItems.map {
             cartRepository.findByIdOrNull(it.id)
                 ?: throw ModelNotFoundException("item", it.id)
         }
@@ -83,8 +91,8 @@ class CartServiceImpl(
         }
     }
 
-    override fun moveItemToFridge(request: ItemPurchaseOrMoveRequest) {
-        val itemToPurchase = request.listOfItemsToPurchase.map {
+    override fun moveItemToFridge(request: ItemListToSomething) {
+        val itemToPurchase = request.listOfItems.map {
             cartRepository.findByIdOrNull(it.id)
                 ?: throw ModelNotFoundException("item", it.id)
         }
@@ -97,6 +105,7 @@ class CartServiceImpl(
             )
             fridgeRepository.save(fridge)
         }
+        //이후 삭제를 할지 말지는 고민을 조금 해봐야할듯
     }
 
 

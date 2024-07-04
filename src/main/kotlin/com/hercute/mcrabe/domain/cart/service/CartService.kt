@@ -1,9 +1,11 @@
 package com.hercute.mcrabe.domain.cart.service
 
 import com.hercute.mcrabe.domain.cart.dto.AddItemInCartRequest
-import com.hercute.mcrabe.domain.cart.dto.ItemPurchaseOrMoveRequest
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import java.sql.Timestamp
 
 interface CartService {
@@ -30,20 +32,22 @@ interface CartService {
     ): ItemResponse
 
     fun getItemList(
+        pageable: Pageable,
 //        userPrincipal: UserPrincipal,
         purchasedDate: Timestamp?
-    ): List<ItemResponse>
+    ): Page<ItemResponse>
 
     fun getCartRecords(
+        pageable: Pageable,
 //        userPrincipal: UserPrincipal,
-    ): List<ItemResponse>
+    ): Page<ItemResponse>
 
     fun checkItemPurchaseStatus(
-        request: ItemPurchaseOrMoveRequest
+        request: ItemListToSomething
     )
 
     fun moveItemToFridge(
 //        userPrincipal: UserPrincipal,
-        request: ItemPurchaseOrMoveRequest
+        request: ItemListToSomething
     )
 }
