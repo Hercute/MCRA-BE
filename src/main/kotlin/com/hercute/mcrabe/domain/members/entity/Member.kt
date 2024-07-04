@@ -1,9 +1,14 @@
 package com.hercute.mcrabe.domain.members.entity
 
 import jakarta.persistence.*
+import org.hibernate.annotations.SQLDelete
+import org.hibernate.annotations.SQLRestriction
 
 @Table
 @Entity
+@SQLDelete(sql = "UPDATE members SET is_deleted = true WHERE id = ?")
+@SQLRestriction("is_deleted = false")
+
 class Member(
     @Column(name = "email", unique = true)
     var email: String,
@@ -33,7 +38,7 @@ class Member(
 
 // fridges(냉장고) 와의 1대 다 관계 설정
 //    @OneToMany(
-//        mappedBy = "category",
+//        mappedBy = "fridges",
 //        fetch = FetchType.LAZY,
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
@@ -42,7 +47,7 @@ class Member(
 
 // chatroom(채팅방) 와의 1대 다 관계 설정
 //    @OneToMany(
-//        mappedBy = "category",
+//        mappedBy = "chatroom",
 //        fetch = FetchType.LAZY,
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
@@ -51,7 +56,7 @@ class Member(
 
 // chatmessages(채팅메시지) 와의 1대 다 관계 설정
 //    @OneToMany(
-//        mappedBy = "category",
+//        mappedBy = "chatmessages",
 //        fetch = FetchType.LAZY,
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
@@ -60,7 +65,7 @@ class Member(
 
 // likes(좋아요) 와의 1대 다 관계 설정
 //    @OneToMany(
-//        mappedBy = "category",
+//        mappedBy = "likes",
 //        fetch = FetchType.LAZY,
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
@@ -69,7 +74,7 @@ class Member(
 
 // recipes(레시피) 와의 1대 다 관계 설정
 //    @OneToMany(
-//        mappedBy = "category",
+//        mappedBy = "recipes",
 //        fetch = FetchType.LAZY,
 //        cascade = [CascadeType.ALL],
 //        orphanRemoval = true
@@ -82,6 +87,11 @@ class Member(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null
+
+    fun updateProfile(nickname: String, introduce: String) {
+        this.nickname = nickname
+        this.introduce = introduce
+    }
 }
 enum class MemberRole {
     ADMIN, MEMBER, NONMEMBER
@@ -90,3 +100,4 @@ enum class MemberRole {
 enum class Provider{
     COMMON, GOOGLE, KAKAO, NAVER
 }
+

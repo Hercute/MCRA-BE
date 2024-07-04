@@ -8,8 +8,10 @@ import com.hercute.mcrabe.domain.members.entity.ProviderMap
 import com.hercute.mcrabe.domain.members.repository.MemberRepository
 import com.hercute.mcrabe.domain.members.repository.ProviderMapRepository
 import com.hercute.mcrabe.global.error.exception.InvalidCredentialException
+import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import com.hercute.mcrabe.global.infra.security.jwt.JwtPlugin
 import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -85,31 +87,67 @@ class MemberServiceImpl (
             ?: memberRepository.save(socialSignUpAndRegister(userInfo.id,userInfo.nickname, userInfo.email, userInfo.introduce, provider))
     }
     override fun socialSignUpAndRegister(id: String, nickname: String, email: String, introduce: String, provider: Provider): Member {
-        TODO("Not yet implemented")
+        val member = memberRepository.save(
+            Member(
+                email = email,
+                nickname = nickname,
+                introduce = introduce,
+                password = "",
+                role = MemberRole.MEMBER
+            )
+        )
+
+        providerMapRepository.save(
+            ProviderMap(
+                memberId = member.id!!
+            )
+        ).registerSocialInfo(provider)
+        return member
     }
     override fun getProfile(memberId: Long): MemberResponse {
-        TODO("Not yet implemented")
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw ModelNotFoundException("Member", memberId)
+        return MemberResponse.from(member)
     }
     @Transactional
     override fun updateProfile(nickname: String, introduce: String, memberId: Long) {
-        TODO("Not yet implemented")
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw InvalidCredentialException("")
+        member.updateProfile(nickname, introduce)
     }
 
     @Transactional
     override fun unregister(user: UserPrincipal) {
-        TODO("Not yet implemented")
+        val member = memberRepository.findByEmail(user.email)
+            ?: throw InvalidCredentialException("")
+        memberRepository.delete(member)
+        providerMapRepository.deleteByMemberId(member.id!!)
     }
 
     @Transactional
     override fun rejoin(loginRequest: LoginRequest) {
-        TODO("Not yet implemented")
+        memberRepository.restoreMemberByEmail(loginRequest.email)
+            ?.let {
+                check(passwordEncoder.matches(loginRequest.password, it.password))
+                it.isDeleted = false
+                providerMapRepository.restoreProviderMapByMemberId(it.id!!)
+                    ?.isDeleted = false
+            }
+            ?: throw InvalidCredentialException("")
     }
 
     override fun isSocial(userPrincipal: UserPrincipal): Boolean {
-        TODO("Not yet implemented")
+        val member = memberRepository.findByIdOrNull(userPrincipal.id)
+            ?: throw InvalidCredentialException("")
+        return member.password == ""
     }
 
     override fun verifyCurrentPassword(currentPassword: String, memberId: Long): VerifyCurrentPasswordREsponse {
-        TODO("Not yet implemented")
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw ModelNotFoundException("Member", memberId)
+        if(!passwordEncoder.matches(currentPassword, member.password)){
+            throw InvalidCredentialException("")
+        }
+        return VerifyCurrentPasswordREsponse(success = true, "비밀번호가 확인되었습니다.")
     }
 }
