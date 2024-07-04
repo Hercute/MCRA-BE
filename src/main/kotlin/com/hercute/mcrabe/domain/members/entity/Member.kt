@@ -1,5 +1,7 @@
 package com.hercute.mcrabe.domain.members.entity
 
+import com.hercute.mcrabe.global.common.BaseEntity
+import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import jakarta.persistence.*
 import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
@@ -13,7 +15,6 @@ class Member(
     @Column(name = "email", unique = true)
     var email: String,
 
-    // 원래 password도 따로 받아서 저장했었나요?
     @Column(name = "password")
     var password : String? = null,
 
@@ -26,6 +27,8 @@ class Member(
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     val role : MemberRole,
+    @Column(name = "is_Blocked")
+    var isBlocked: Boolean = false
 
 // cart(장보기 목록) 와의 1대 다 관계 설정
 //    @OneToMany(
@@ -81,6 +84,7 @@ class Member(
 //    )
 //    var recipes : MutableList<recipes> = mutableListOf()
 )
+    :BaseEntity()
 {
 
 

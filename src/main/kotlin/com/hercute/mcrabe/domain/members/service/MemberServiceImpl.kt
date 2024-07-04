@@ -116,6 +116,13 @@ class MemberServiceImpl (
         member.updateProfile(nickname, introduce)
     }
 
+    override fun blockMember(memberId: Long) {
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw ModelNotFoundException("Member", memberId)
+        member.isBlocked = true
+        memberRepository.save(member)
+    }
+
     @Transactional
     override fun unregister(user: UserPrincipal) {
         val member = memberRepository.findByEmail(user.email)
