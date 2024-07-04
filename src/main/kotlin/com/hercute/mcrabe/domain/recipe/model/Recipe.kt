@@ -21,9 +21,12 @@ class Recipe(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id : Long? = null
 
-    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val recipeTagMaps: MutableList<TagMap> = mutableListOf()
+    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true )
+    val StepList : MutableList<Step> = mutableListOf()
 
     @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val ingredientMaps: MutableList<IngredientMap> = mutableListOf()
+    val TagMapList : MutableList<TagMap> = mutableListOf()
+
+    @OneToMany(mappedBy = "recipe", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val ingredientMapList: MutableList<IngredientMap> = mutableListOf()
 }

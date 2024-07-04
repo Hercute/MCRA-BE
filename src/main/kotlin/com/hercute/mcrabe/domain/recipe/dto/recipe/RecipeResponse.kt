@@ -1,6 +1,7 @@
 package com.hercute.mcrabe.domain.recipe.dto.recipe
 
 import com.hercute.mcrabe.domain.recipe.dto.ingredientMap.IngredientMapResponse
+import com.hercute.mcrabe.domain.recipe.dto.step.StepResponse
 import com.hercute.mcrabe.domain.recipe.dto.tagMap.TagMapResponse
 import com.hercute.mcrabe.domain.recipe.model.Recipe
 import com.hercute.mcrabe.domain.recipe.service.RecipeService
@@ -16,11 +17,12 @@ data class RecipeResponse(
     val likeCounts:Int,
     val image:String,
 
+    val stepList : List<StepResponse>,
     val tagMapList: List<TagMapResponse>,
     val ingredientMapList: List<IngredientMapResponse>
 ){
     companion object {
-        fun from(recipe: Recipe, tagMapList : List<TagMapResponse>, ingredientMapList : List<IngredientMapResponse>): RecipeResponse {
+        fun from(recipe: Recipe, stepList: List<StepResponse>, tagMapList : List<TagMapResponse>, ingredientMapList : List<IngredientMapResponse>): RecipeResponse {
             return RecipeResponse(
                 id = recipe.id!!,
                 title = recipe.title,
@@ -30,6 +32,8 @@ data class RecipeResponse(
                 time = recipe.time,
                 likeCounts = recipe.likeCounts,
                 image = recipe.image,
+
+                stepList = stepList,
                 tagMapList = tagMapList,
                 ingredientMapList = ingredientMapList,
             )
