@@ -11,34 +11,34 @@ import java.sql.Timestamp
 interface CartService {
 
     fun addItemInCart(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
         request: AddItemInCartRequest
     )
 
     fun updateItemOfCart(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
         itemId: Long,
         request: UpdateItemInCartRequest
     )
 
     fun deleteItemOfCart(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
         request: ItemListToSomething,
     )
 
     fun getItemOfCart(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
         itemId: Long
     ): ItemResponse
 
     fun getItemList(
+        memberId: Long,
         pageable: Pageable,
-//        userPrincipal: UserPrincipal,
         purchasedDate: Timestamp?
     ): Page<ItemResponse>
 
     fun getCartRecords(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
     ): List<ItemResponse>
 
     fun checkItemPurchaseStatus(
@@ -46,7 +46,7 @@ interface CartService {
     )
 
     fun moveItemToFridge(
-//        userPrincipal: UserPrincipal,
+        memberId: Long,
         request: ItemListToSomething
     )
 }

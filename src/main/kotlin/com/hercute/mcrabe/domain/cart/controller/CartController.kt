@@ -5,11 +5,13 @@ import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.cart.dto.ItemResponse
 import com.hercute.mcrabe.domain.cart.dto.UpdateItemInCartRequest
 import com.hercute.mcrabe.domain.cart.service.CartService
+import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -29,63 +31,63 @@ class CartController(
 
     @PostMapping
     fun addItemInCart(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody request: AddItemInCartRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(cartService.addItemInCart(request))
+            .body(cartService.addItemInCart(userPrincipal.id, request))
     }
 
     @PutMapping("/{itemId}")
     fun updateItemOfCart(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable itemId: Long,
         @RequestBody request: UpdateItemInCartRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.updateItemOfCart(itemId, request))
+            .body(cartService.updateItemOfCart(userPrincipal.id, itemId, request))
     }
 
     @DeleteMapping("")
     fun deleteItemOfCart(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestParam request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(cartService.deleteItemOfCart(request))
+            .body(cartService.deleteItemOfCart(userPrincipal.id, request))
     }
 
     @GetMapping("/{itemId}")
     fun getItemOfCart(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable itemId: Long
     ): ResponseEntity<ItemResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getItemOfCart(itemId))
+            .body(cartService.getItemOfCart(userPrincipal.id, itemId))
     }
 
     @GetMapping
     fun getItemList(
         @PageableDefault(size = 5, sort = ["id"]) pageable: Pageable,
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestParam(required = false) purchasedDate: Timestamp?
     ): ResponseEntity<Page<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getItemList(pageable, purchasedDate))
+            .body(cartService.getItemList(userPrincipal.id, pageable, purchasedDate))
     }
 
     @GetMapping("/records")
     fun getCartRecords(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ResponseEntity<List<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getCartRecords())
+            .body(cartService.getCartRecords(userPrincipal.id))
     }
 
     @PutMapping("/purchase")
@@ -99,11 +101,11 @@ class CartController(
 
     @PutMapping("/move")
     fun moveItemToFridge(
-    //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+            @AuthenticationPrincipal userPrincipal: UserPrincipal,
         request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.moveItemToFridge(request))
+            .body(cartService.moveItemToFridge(userPrincipal.id, request))
     }
 }

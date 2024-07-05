@@ -8,6 +8,7 @@ import com.hercute.mcrabe.domain.fridge.dto.UpdateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.model.Fridge
 import com.hercute.mcrabe.domain.fridge.repository.FridgeRepository
 import com.hercute.mcrabe.domain.members.repository.MemberRepository
+import com.hercute.mcrabe.global.error.exception.InvalidCredentialException
 import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -19,9 +20,9 @@ class FridgeServiceImpl(
     private val categoryRepository: CategoryRepository,
     private val memberRepository: MemberRepository
 ): FridgeService {
-    override fun createItemInFridge(request: CreateFridgeRequest) {
-        val member = memberRepository.findByIdOrNull(0)
-            ?: throw ModelNotFoundException("member", 0)
+    override fun createItemInFridge(memberId: Long, request: CreateFridgeRequest) {
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw ModelNotFoundException("member", memberId)
         val category = categoryRepository.findByIdOrNull(request.categoryId)
             ?: throw ModelNotFoundException("category", request.categoryId)
         val item = Fridge(
@@ -35,12 +36,15 @@ class FridgeServiceImpl(
         fridgeRepository.save(item)
     }
 
-    override fun updateItemOfFridge(fridgeId: Long, request: UpdateFridgeRequest) {
+    override fun updateItemOfFridge(memberId: Long, fridgeId: Long, request: UpdateFridgeRequest) {
         //자기 냉장고속 아이템인지 확인하는 절차 필요할지도?
         val item = fridgeRepository.findByIdOrNull(fridgeId)
             ?: throw ModelNotFoundException("Item", fridgeId)
         val category = categoryRepository.findByIdOrNull(request.categoryId)
             ?: throw ModelNotFoundException("category", request.categoryId)
+        if (item.member.id != memberId) {
+            throw InvalidCredentialException("유저정보가 일치하지 않습니다.")
+        }
         item.category = category
         item.name = request.name
         item.expirationDate = request.expirationDate
@@ -49,7 +53,7 @@ class FridgeServiceImpl(
         fridgeRepository.save(item)
     }
 
-    override fun deleteItemOfFridge(request: ItemListToSomething) {
+    override fun deleteItemOfFridge(memberId: Long, request: ItemListToSomething) {
         val itemList = request.listOfItems.map {
             fridgeRepository.findByIdOrNull(it.id)
                 ?: throw ModelNotFoundException("item", it.id)
@@ -59,14 +63,14 @@ class FridgeServiceImpl(
         }
     }
 
-    override fun getItemOfFridge(fridgeId: Long): FridgeResponse {
+    override fun getItemOfFridge(memberId: Long, fridgeId: Long): FridgeResponse {
         val item = fridgeRepository.findByIdOrNull(fridgeId)
             ?: throw ModelNotFoundException("Item", fridgeId)
         return FridgeResponse.from(item)
     }
 
-    override fun getItemListOfFridge(): List<FridgeResponse> {
-        val itemList = fridgeRepository.findByMemberId(0) //유저프린시펄 추가후 수정필요
+    override fun getItemListOfFridge(memberId: Long): List<FridgeResponse> {
+        val itemList = fridgeRepository.findByMemberId(memberId)
         return itemList.map { FridgeResponse.from(it) }
     }
 }

@@ -9,7 +9,7 @@ import org.hibernate.annotations.SQLRestriction
 import java.sql.Timestamp
 
 @Entity
-@SQLDelete(sql = "UPDATE categories SET is_deleted = true WHERE id = ?") // DELETE 쿼리 날아올 시 대신 실행
+@SQLDelete(sql = "UPDATE fridges SET is_deleted = true WHERE id = ?") // DELETE 쿼리 날아올 시 대신 실행
 @SQLRestriction("is_deleted = false")
 @Table(name = "fridges")
 class Fridge(

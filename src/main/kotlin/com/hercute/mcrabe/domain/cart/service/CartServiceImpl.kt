@@ -10,6 +10,7 @@ import com.hercute.mcrabe.domain.categories.repository.CategoryRepository
 import com.hercute.mcrabe.domain.fridge.model.Fridge
 import com.hercute.mcrabe.domain.fridge.repository.FridgeRepository
 import com.hercute.mcrabe.domain.members.repository.MemberRepository
+import com.hercute.mcrabe.global.error.exception.InvalidCredentialException
 import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -24,9 +25,9 @@ class CartServiceImpl(
     private val categoryRepository: CategoryRepository,
     private val memberRepository: MemberRepository
 ):CartService {
-    override fun addItemInCart(request: AddItemInCartRequest) {
-        val member = memberRepository.findByIdOrNull(0) //유저프린시펄 추가후 수정필요
-            ?: throw ModelNotFoundException("member", 0)
+    override fun addItemInCart(memberId: Long, request: AddItemInCartRequest) {
+        val member = memberRepository.findByIdOrNull(memberId)
+            ?: throw ModelNotFoundException("member", memberId)
         val category = categoryRepository.findByIdOrNull(request.categoryId)
             ?: throw ModelNotFoundException("category", request.categoryId)
         val item = Cart(
@@ -38,17 +39,20 @@ class CartServiceImpl(
         cartRepository.save(item)
     }
 
-    override fun updateItemOfCart(itemId: Long, request: UpdateItemInCartRequest) {
+    override fun updateItemOfCart(memberId: Long, itemId: Long, request: UpdateItemInCartRequest) {
         val category = categoryRepository.findByIdOrNull(request.categoryId)
             ?: throw ModelNotFoundException("category", request.categoryId)
         val item = cartRepository.findByIdOrNull(itemId)
             ?: throw ModelNotFoundException("item", itemId)
+        if (item.member.id != memberId) {
+            throw InvalidCredentialException("유저정보가 일치하지 않습니다.")
+        }
         item.category = category
         item.name = request.name
         item.memo = request.memo
     }
 
-    override fun deleteItemOfCart(request: ItemListToSomething) {
+    override fun deleteItemOfCart(memberId: Long, request: ItemListToSomething) {
         val itemList = request.listOfItems.map {
             cartRepository.findByIdOrNull(it.id)
                 ?: throw ModelNotFoundException("item", it.id)
@@ -58,7 +62,7 @@ class CartServiceImpl(
         }
     }
 
-    override fun getItemOfCart(itemId: Long): ItemResponse {
+    override fun getItemOfCart(memberId: Long, itemId: Long): ItemResponse {
         val item = cartRepository.findByIdOrNull(itemId)
             ?: throw ModelNotFoundException("item", itemId)
         val category = categoryRepository.findByIdOrNull(item.category.id)
@@ -66,7 +70,7 @@ class CartServiceImpl(
         return ItemResponse.from(item,category)
     }
 
-    override fun getItemList(pageable: Pageable, purchasedDate: Timestamp?): Page<ItemResponse> {
+    override fun getItemList(memberId: Long, pageable: Pageable, purchasedDate: Timestamp?): Page<ItemResponse> {
         val itemList = cartRepository.findItemByPurchaseStatus(pageable, purchasedDate)
         return itemList.map {
             val category = categoryRepository.findByIdOrNull(it.category.id)
@@ -75,9 +79,9 @@ class CartServiceImpl(
         }
     }
 
-    override fun getCartRecords(): List<ItemResponse> {
-        val cartRecord = cartRepository.findAllByMemberId(0)
-            ?: throw ModelNotFoundException("item", 0) // 유저 프린시펄 추가후 수정필요
+    override fun getCartRecords(memberId: Long): List<ItemResponse> {
+        val cartRecord = cartRepository.findAllByMemberId(memberId)
+            ?: throw ModelNotFoundException("item", memberId)
         return cartRecord.map {
             val category = categoryRepository.findByIdOrNull(it!!.category.id)
                 ?: throw ModelNotFoundException("category", it.category.id)
@@ -97,7 +101,7 @@ class CartServiceImpl(
         }
     }
 
-    override fun moveItemToFridge(request: ItemListToSomething) {
+    override fun moveItemToFridge(memberId: Long, request: ItemListToSomething) {
         val itemToPurchase = request.listOfItems.map {
             cartRepository.findByIdOrNull(it.id)
                 ?: throw ModelNotFoundException("item", it.id)

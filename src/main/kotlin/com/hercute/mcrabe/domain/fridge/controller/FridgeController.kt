@@ -5,8 +5,10 @@ import com.hercute.mcrabe.domain.fridge.dto.CreateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.dto.FridgeResponse
 import com.hercute.mcrabe.domain.fridge.dto.UpdateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.service.FridgeService
+import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -25,52 +27,52 @@ class FridgeController(
 
     @PostMapping
     fun createItemInFridge(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestBody request: CreateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .body(fridgeService.createItemInFridge(request))
+            .body(fridgeService.createItemInFridge(userPrincipal.id, request))
     }
 
     @PutMapping("/{fridgeId}")
     fun updateItemOfFridge(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable fridgeId: Long,
         @RequestBody request: UpdateFridgeRequest
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.updateItemOfFridge(fridgeId, request))
+            .body(fridgeService.updateItemOfFridge(userPrincipal.id, fridgeId, request))
     }
 
     @DeleteMapping()
     fun deleteItemOfFridge(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @RequestParam request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(fridgeService.deleteItemOfFridge(request))
+            .body(fridgeService.deleteItemOfFridge(userPrincipal.id, request))
     }
 
     @GetMapping("/{fridgeId}")
     fun getItemOfFridge(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
         @PathVariable fridgeId: Long
     ): ResponseEntity<FridgeResponse> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getItemOfFridge(fridgeId))
+            .body(fridgeService.getItemOfFridge(userPrincipal.id, fridgeId))
     }
 
     @GetMapping()
     fun getItemListOfFridge(
-//        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
     ): ResponseEntity<List<FridgeResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(fridgeService.getItemListOfFridge())
+            .body(fridgeService.getItemListOfFridge(userPrincipal.id))
     }
 
 
