@@ -7,10 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.query.Param
 
 interface ProviderMapRepository : JpaRepository<ProviderMap, Long> {
-    fun fineByMemberId(memberId : Long) : ProviderMap
+    fun findByMemberId(memberId : Long) : ProviderMap
 
     fun deleteByMemberId(memberId: Long) : Any
 
-
-    fun restoreProviderMapByMemberId(@Param("memberid") memberId: Long): ProviderMap?
+//    fun restoreProviderMapByMemberId(@Param("memberid") memberId: Long): ProviderMap?
 }

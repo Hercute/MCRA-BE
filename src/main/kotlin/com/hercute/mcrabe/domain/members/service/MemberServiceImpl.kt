@@ -11,6 +11,8 @@ import com.hercute.mcrabe.global.error.exception.InvalidCredentialException
 import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import com.hercute.mcrabe.global.infra.security.jwt.JwtPlugin
 import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -22,12 +24,13 @@ class MemberServiceImpl (
     private val providerMapRepository: ProviderMapRepository,
     private val passwordEncoder: PasswordEncoder,
     private val jwtPlugin: JwtPlugin
+//    private var likeRepository : LikeRepository
 ) : MemberService{
     @Transactional
     override fun signUp(memberRequest: MemberRequest, role: MemberRole) {
         memberRepository.findByEmail(memberRequest.email)
             ?.let {
-                providerMapRepository.fineByMemberId(it.id!!)
+                providerMapRepository.findByMemberId(it.id!!)
                     .run {
                         check(!this.isCommonMember)
                         this.registerSocialInfo(Provider.COMMON)
@@ -55,7 +58,7 @@ class MemberServiceImpl (
     override fun login(loginRequest: LoginRequest): LoginResponse {
         val member = memberRepository.findByEmail(loginRequest.email)
             ?: throw  InvalidCredentialException("")
-        check(providerMapRepository.fineByMemberId(member.id!!).isCommonMember)
+        check(providerMapRepository.findByMemberId(member.id!!).isCommonMember)
 
         if (!passwordEncoder.matches(loginRequest.password, member.password))
             throw InvalidCredentialException("")
@@ -83,7 +86,7 @@ class MemberServiceImpl (
     override fun socialSignUpOrLogin(userInfo: OAuth2UserInfo): Any? {
         val provider = Provider.valueOf(userInfo.provider)
         return memberRepository.findByEmail(userInfo.email)
-            ?.let { providerMapRepository.fineByMemberId(it.id!!).registerSocialInfo(provider) }
+            ?.let { providerMapRepository.findByMemberId(it.id!!).registerSocialInfo(provider) }
             ?: memberRepository.save(socialSignUpAndRegister(userInfo.id,userInfo.nickname, userInfo.email, userInfo.introduce, provider))
     }
     override fun socialSignUpAndRegister(id: String, nickname: String, email: String, introduce: String, provider: Provider): Member {
@@ -116,6 +119,14 @@ class MemberServiceImpl (
         member.updateProfile(nickname, introduce)
     }
 
+    // 좋아요 목록 정렬을 위한 조기 생성
+//    override fun getLikeList(pageable: Pageable, memberId: Long?): Page<LikeResponse> {
+//        return if (memberId == null)
+//            throw ModelNotFoundException
+//        else
+//            likeRepository.getLikeList(pageable,memberId).map{LikeResponse.from(it)}
+//    }
+
     override fun blockMember(memberId: Long) {
         val member = memberRepository.findByIdOrNull(memberId)
             ?: throw ModelNotFoundException("Member", memberId)
@@ -137,8 +148,8 @@ class MemberServiceImpl (
             ?.let {
                 check(passwordEncoder.matches(loginRequest.password, it.password))
                 it.isDeleted = false
-                providerMapRepository.restoreProviderMapByMemberId(it.id!!)
-                    ?.isDeleted = false
+                providerMapRepository.findByMemberId(it.id!!)
+                    ?.let { providerMap -> providerMap.isDeleted =false}
             }
             ?: throw InvalidCredentialException("")
     }

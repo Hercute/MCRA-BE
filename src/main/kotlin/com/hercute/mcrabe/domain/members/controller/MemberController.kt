@@ -37,7 +37,7 @@ class MemberController(
     // 재가입(rejoin)
     // 프로필 조회(getProfile)
     // 프로필 업데이트(updateProfile)
-    // 좋아요 목록 조회
+    // 좋아요 목록 조회(getlikelist 초안만 작성)
     // 소셜 유저 확인(issocial)
     // 비밀번호 확인(verifyCurrentPassword)
     // 이 중 회원 차단, 소셜 유저 확인은 AdminMemberController로 구성함
@@ -59,7 +59,7 @@ class MemberController(
             .body(memberService.login(loginRequest))
     }
 
-    @GetMapping("{/memberId}")
+    @GetMapping("/{memberId}")
     fun getProfile(
             @PathVariable memberId : Long
     ): ResponseEntity<MemberResponse>{
@@ -94,7 +94,7 @@ class MemberController(
             .body(memberService.unregister(user))
     }
 
-    // 재가입 기능, 혹시 몰라 작성
+     //재가입 기능, 혹시 몰라 작성
     @PutMapping("/rejoin")
     fun rejoin(
         @RequestBody loginRequest: LoginRequest
