@@ -5,6 +5,8 @@ import com.hercute.mcrabe.domain.members.entity.Member
 import com.hercute.mcrabe.domain.members.entity.MemberRole
 import com.hercute.mcrabe.domain.members.entity.Provider
 import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface MemberService {
     fun signUp(memberRequest: MemberRequest, role : MemberRole)
@@ -14,7 +16,9 @@ interface MemberService {
     fun socialSignUpAndRegister(id: String, nickname: String, email: String, introduce: String, provider: Provider) : Member
     fun getProfile(memberId: Long) : MemberResponse
     fun updateProfile(nickname: String, introduce: String, memberId: Long)
-    // introduce를 다른 파일에도 추가해 줄 것
+
+//    fun getLikeList(pageable: Pageable, memberId: Long?) : Page<LikeResponse>
+    fun blockMember(memberId: Long)
     fun unregister(user: UserPrincipal)
     fun rejoin(loginRequest: LoginRequest)
     fun isSocial(userPrincipal: UserPrincipal) : Boolean

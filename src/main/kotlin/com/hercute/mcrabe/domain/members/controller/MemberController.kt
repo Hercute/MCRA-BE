@@ -3,6 +3,7 @@ package com.hercute.mcrabe.domain.members.controller
 import com.hercute.mcrabe.domain.members.dto.*
 import com.hercute.mcrabe.domain.members.entity.MemberRole
 import com.hercute.mcrabe.domain.members.service.MemberService
+import com.hercute.mcrabe.global.error.exception.ModelNotFoundException
 import com.hercute.mcrabe.global.infra.security.jwt.UserPrincipal
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
@@ -30,14 +31,16 @@ class MemberController(
     // **이메일 인증**
     // 로그인(login)
     // **소셜로그인**
-    // 로그아웃(logout)
+    // 로그아웃(백엔드에서는 미구현)
     // 회원 탈퇴(unregister)
-    // 회원 차단
+    // 회원 차단(blockmember)
     // 재가입(rejoin)
     // 프로필 조회(getProfile)
     // 프로필 업데이트(updateProfile)
-    // 좋아요 목록 조회
-    // 소셜 유저 확인
+    // 좋아요 목록 조회(getlikelist 초안만 작성)
+    // 소셜 유저 확인(issocial)
+    // 비밀번호 확인(verifyCurrentPassword)
+    // 이 중 회원 차단, 소셜 유저 확인은 AdminMemberController로 구성함
     @PostMapping("/signup")
     fun signUp(
         @Valid @RequestBody memberRequest: MemberRequest,
@@ -56,7 +59,7 @@ class MemberController(
             .body(memberService.login(loginRequest))
     }
 
-    @GetMapping("{/memberId}")
+    @GetMapping("/{memberId}")
     fun getProfile(
             @PathVariable memberId : Long
     ): ResponseEntity<MemberResponse>{
@@ -64,18 +67,6 @@ class MemberController(
             .status(HttpStatus.OK)
             .body(memberService.getProfile(memberId))
     }
-    @PostMapping("/verify-password")
-    fun verifyCurrentPassword(
-        @RequestParam currentPassword : String,
-        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        ): ResponseEntity<VerifyCurrentPasswordREsponse>{
-        // 도달 여부 확인을 위한 출력문
-        println("백엔드 도달")
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(memberService.verifyCurrentPassword(currentPassword, userPrincipal.id))
-    }
-
     @PutMapping("/update")
     fun updateProfile(
         @RequestParam nickname : String,
@@ -87,6 +78,12 @@ class MemberController(
             .body(memberService.updateProfile(nickname, introduce, userPrincipal.id))
     }
 
+    @PutMapping("/{memberId}/block")
+    fun blockMember(@PathVariable memberId: Long
+    ): ResponseEntity<Unit>{
+        memberService.blockMember(memberId)
+        return ResponseEntity.status(HttpStatus.OK).build()
+    }
     @DeleteMapping("/unregister")
     fun unregister(
         authentication: Authentication
@@ -97,7 +94,7 @@ class MemberController(
             .body(memberService.unregister(user))
     }
 
-    // 재가입 기능, 혹시 몰라 작성
+     //재가입 기능, 혹시 몰라 작성
     @PutMapping("/rejoin")
     fun rejoin(
         @RequestBody loginRequest: LoginRequest
@@ -107,12 +104,17 @@ class MemberController(
             .body(memberService.rejoin(loginRequest))
     }
 
-    @GetMapping("/issocial")
-    fun issocial(
-        @AuthenticationPrincipal userPrincipal: UserPrincipal
-    ): ResponseEntity<Boolean>{
+
+
+    @PostMapping("/verify-password")
+    fun verifyCurrentPassword(
+        @RequestParam currentPassword : String,
+        @AuthenticationPrincipal userPrincipal: UserPrincipal,
+    ): ResponseEntity<VerifyCurrentPasswordREsponse>{
+        // 도달 여부 확인을 위한 출력문
+        println("백엔드 도달")
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(memberService.isSocial(userPrincipal))
+            .body(memberService.verifyCurrentPassword(currentPassword, userPrincipal.id))
     }
 }
