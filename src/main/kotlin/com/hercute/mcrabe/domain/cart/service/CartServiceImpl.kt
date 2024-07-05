@@ -48,10 +48,14 @@ class CartServiceImpl(
         item.memo = request.memo
     }
 
-    override fun deleteItemOfCart(itemId: Long) {
-        val item = cartRepository.findByIdOrNull(itemId)
-            ?: throw ModelNotFoundException("item", itemId)
-        cartRepository.delete(item)
+    override fun deleteItemOfCart(request: ItemListToSomething) {
+        val itemList = request.listOfItems.map {
+            cartRepository.findByIdOrNull(it.id)
+                ?: throw ModelNotFoundException("item", it.id)
+        }
+        itemList.map {
+            cartRepository.delete(it)
+        }
     }
 
     override fun getItemOfCart(itemId: Long): ItemResponse {
@@ -71,12 +75,14 @@ class CartServiceImpl(
         }
     }
 
-    override fun getCartRecords(pageable: Pageable,): Page<ItemResponse> {
-        //살짝 애매한 부분
-        //과거의 카트 기록을 보는건데 와이어프레임 상에선 달력에 표시되는 형식인것 같음
-        //날짜 하나하나 마다 목록이 떠야하는것인가?
-        //아니면 그냥 모든 기록들을 날짜상관없이 가져오는것인가??
-        TODO("Not yet implemented")
+    override fun getCartRecords(): List<ItemResponse> {
+        val cartRecord = cartRepository.findAllByMemberId(0)
+            ?: throw ModelNotFoundException("item", 0) // 유저 프린시펄 추가후 수정필요
+        return cartRecord.map {
+            val category = categoryRepository.findByIdOrNull(it!!.category.id)
+                ?: throw ModelNotFoundException("category", it.category.id)
+            ItemResponse.from(it, category)
+        }
     }
 
     override fun checkItemPurchaseStatus(request: ItemListToSomething) {

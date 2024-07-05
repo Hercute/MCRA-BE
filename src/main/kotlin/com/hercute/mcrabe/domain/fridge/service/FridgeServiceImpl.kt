@@ -1,5 +1,6 @@
 package com.hercute.mcrabe.domain.fridge.service
 
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.categories.repository.CategoryRepository
 import com.hercute.mcrabe.domain.fridge.dto.CreateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.dto.FridgeResponse
@@ -48,10 +49,14 @@ class FridgeServiceImpl(
         fridgeRepository.save(item)
     }
 
-    override fun deleteItemOfFridge(fridgeId: Long) {
-        val item = fridgeRepository.findByIdOrNull(fridgeId)
-            ?: throw ModelNotFoundException("Item", fridgeId)
-        fridgeRepository.delete(item)
+    override fun deleteItemOfFridge(request: ItemListToSomething) {
+        val itemList = request.listOfItems.map {
+            fridgeRepository.findByIdOrNull(it.id)
+                ?: throw ModelNotFoundException("item", it.id)
+        }
+        itemList.map {
+            fridgeRepository.delete(it)
+        }
     }
 
     override fun getItemOfFridge(fridgeId: Long): FridgeResponse {

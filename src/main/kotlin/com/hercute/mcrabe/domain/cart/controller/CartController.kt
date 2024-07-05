@@ -48,14 +48,14 @@ class CartController(
             .body(cartService.updateItemOfCart(itemId, request))
     }
 
-    @DeleteMapping("/{itemId}")
+    @DeleteMapping("")
     fun deleteItemOfCart(
 //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        @PathVariable itemId: Long,
+        @RequestParam request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(cartService.deleteItemOfCart(itemId))
+            .body(cartService.deleteItemOfCart(request))
     }
 
     @GetMapping("/{itemId}")
@@ -81,12 +81,11 @@ class CartController(
 
     @GetMapping("/records")
     fun getCartRecords(
-        @PageableDefault(size = 5, sort = ["id"]) pageable: Pageable,
 //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-    ): ResponseEntity<Page<ItemResponse>> {
+    ): ResponseEntity<List<ItemResponse>> {
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(cartService.getCartRecords(pageable))
+            .body(cartService.getCartRecords())
     }
 
     @PutMapping("/purchase")

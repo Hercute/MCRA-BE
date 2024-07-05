@@ -1,5 +1,6 @@
 package com.hercute.mcrabe.domain.fridge.service
 
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.fridge.dto.CreateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.dto.FridgeResponse
 import com.hercute.mcrabe.domain.fridge.dto.UpdateFridgeRequest
@@ -10,7 +11,7 @@ interface FridgeService {
 
     fun updateItemOfFridge(fridgeId: Long, request: UpdateFridgeRequest)
 
-    fun deleteItemOfFridge( fridgeId: Long)
+    fun deleteItemOfFridge( request: ItemListToSomething)
 
     fun getItemOfFridge(fridgeId: Long): FridgeResponse
 

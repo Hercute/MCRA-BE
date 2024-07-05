@@ -1,5 +1,6 @@
 package com.hercute.mcrabe.domain.fridge.controller
 
+import com.hercute.mcrabe.domain.cart.dto.ItemListToSomething
 import com.hercute.mcrabe.domain.fridge.dto.CreateFridgeRequest
 import com.hercute.mcrabe.domain.fridge.dto.FridgeResponse
 import com.hercute.mcrabe.domain.fridge.dto.UpdateFridgeRequest
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -42,14 +44,14 @@ class FridgeController(
             .body(fridgeService.updateItemOfFridge(fridgeId, request))
     }
 
-    @DeleteMapping("/{fridgeId}")
+    @DeleteMapping()
     fun deleteItemOfFridge(
 //        @AuthenticationPrincipal userPrincipal: UserPrincipal,
-        @PathVariable fridgeId: Long
+        @RequestParam request: ItemListToSomething
     ): ResponseEntity<Unit> {
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT)
-            .body(fridgeService.deleteItemOfFridge(fridgeId))
+            .body(fridgeService.deleteItemOfFridge(request))
     }
 
     @GetMapping("/{fridgeId}")

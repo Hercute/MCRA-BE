@@ -23,7 +23,7 @@ interface CartService {
 
     fun deleteItemOfCart(
 //        userPrincipal: UserPrincipal,
-        itemId: Long,
+        request: ItemListToSomething,
     )
 
     fun getItemOfCart(
@@ -38,9 +38,8 @@ interface CartService {
     ): Page<ItemResponse>
 
     fun getCartRecords(
-        pageable: Pageable,
 //        userPrincipal: UserPrincipal,
-    ): Page<ItemResponse>
+    ): List<ItemResponse>
 
     fun checkItemPurchaseStatus(
         request: ItemListToSomething
