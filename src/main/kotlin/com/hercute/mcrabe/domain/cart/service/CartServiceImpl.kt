@@ -62,7 +62,7 @@ class CartServiceImpl(
         }
     }
 
-    override fun getItemOfCart(memberId: Long, itemId: Long): ItemResponse {
+    override fun getItemOfCart(memberId: Long, itemId: Long): ItemResponse {0
         val item = cartRepository.findByIdOrNull(itemId)
             ?: throw ModelNotFoundException("item", itemId)
         val category = categoryRepository.findByIdOrNull(item.category.id)
